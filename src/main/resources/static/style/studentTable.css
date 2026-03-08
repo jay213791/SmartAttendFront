@@ -345,6 +345,9 @@ body{
     background: #0b3f4a;
 }
 
+.page-btn:hover{
+    background: #0b3f4a;
+}
 @media (max-width: 900px){
     .student-toolbar{
         flex-direction: column;

@@ -42,9 +42,9 @@ public class StudentController {
                     .body("Email Already Exists");
         }
 
-        if (student.getQrCode() == null || student.getQrCode().isEmpty()) {
+        if (student.getQrCode() == null  || student.getQrCode().isEmpty()) {
             // use the student number
-            if (student.getStudentNumber() != null) {
+            if (student.getStudentNumber() != 0) {
                 student.setQrCode("QR" + student.getStudentNumber());
             } else {
                 // or generate random uuid (only if no student number provided)

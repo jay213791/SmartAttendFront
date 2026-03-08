@@ -56,4 +56,47 @@ public class CardController {
 
         return ResponseEntity.ok(cards);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCard(@PathVariable int id, Authentication authentication) {
+        String teacherEmail = authentication.getName();
+        Teacher teacher = teacherRepository.findByEmail(teacherEmail);
+        if (teacher == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Teacher not found");
+        }
+        cardsRepository.deleteById(id);
+        return ResponseEntity.ok("Card with ID " + id + " has been deleted");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCard(@PathVariable int id, @RequestBody Card card, Authentication authentication) {
+        String teacherEmail = authentication.getName();
+        Teacher teacher = teacherRepository.findByEmail(teacherEmail);
+        if (teacher == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Teacher not found");
+        }
+
+        Card existing = cardsRepository.findById(id).orElse(null);
+        if (existing == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Card not found");
+        }
+
+        if (card.getName() != null) {
+            existing.setName(card.getName());
+        }
+
+        if (card.getSubjectName() != null) {
+            existing.setSubjectName(card.getSubjectName());
+        }
+
+        cardsRepository.save(existing);
+        return ResponseEntity.ok(existing);
+    }
+
 }

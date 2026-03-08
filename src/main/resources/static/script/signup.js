@@ -40,7 +40,9 @@ document.getElementById("registerForm").addEventListener("submit", function (e){
 // this function check kung yung email exists sa database
 async function checkEmailExists(email) {
     try {
-        const response = await fetch(`/teacher/check-email?email=${email}`);
+        const response = await fetch(`/teacher/check-email?email=${email}`, {
+            credentials: "include",
+        });
 
         if (response.status === 400) {
             return true;
@@ -123,7 +125,7 @@ async function validateRegister() {
     };
 
     try {
-        const response = await fetch(`https://smartattend-production-c29f.up.railway.app/teacher/add`, {
+        const response = await fetch(`/teacher/add`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

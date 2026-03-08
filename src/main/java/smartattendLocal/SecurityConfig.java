@@ -35,9 +35,11 @@ public class SecurityConfig {
                                 "/js/**",
                                 "/teacher/login",
                                 "/teacher/forgot-password",
+                                "/teacher/check-email",
                                 "/teacher/verify-otp",
                                 "/teacher/reset-password",
-                                "students/all"
+                                "/teacher/add",
+                                "/students/all"
                         ).permitAll()
 
                         // Teacher-only routes

@@ -13,7 +13,7 @@ public class Student {
     private int id;
 
     @Column(name = "student_number", length = 50, unique = true)
-    private String studentNumber;
+    private int studentNumber;
 
     @Column(name = "SEX")
     private String sex;
