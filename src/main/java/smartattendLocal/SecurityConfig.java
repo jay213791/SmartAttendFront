@@ -47,7 +47,8 @@ public class SecurityConfig {
                                 "/teacher/dashboard/**",
                                 "/students/my-students",
                                 "/students/count/my-students",
-                                "/students/add",
+                                "/students/{cardId}/add",
+                                "/students/{cardId}/students",
                                 "/cards/**"
                         ).hasRole("TEACHER")
 

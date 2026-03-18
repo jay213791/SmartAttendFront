@@ -5,6 +5,7 @@
     <title>Student Table</title>
     <link rel="stylesheet" href="../style/studentTable.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/png" sizes="50x50" href="../assets/SmartAttend-LOGO.jpg">
 </head>
 <body>
@@ -36,26 +37,19 @@
             </div>
 
             <section class="student-toolbar">
-                <div class="week-card">
+                <div class="week-card" onclick="openAddStudentModal()">
                     <div class="week-icon">
-                        <i class="fa-regular fa-calendar-days"></i>
+                        <i class="fa-solid fa-plus plus-icon"></i>
                     </div>
-                    <div class="week-text">
-                        <span class="label">This week:</span>
-                        <span class="range">Nov 11 – Nov 22</span>
-                    </div>
+                    <span class="icon-text">Add Student</span>
                 </div>
 
                 <div class="filter-search">
-                    <div class="filter-group">
-                        <span class="filter-label">Filter by:</span>
-                        <button class="filter-select">
-                            <span>All Class</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </button>
+                    <div class="sendbtn">
+                        <button class="send-btn" onclick="sendTheQrToAllStudents()">Send QR to all</button>
                     </div>
                     <div class="search-group">
-                        <input type="text" placeholder="Search">
+                        <input type="text" id="searchInput" placeholder="Search">
                         <button class="search-btn">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -70,15 +64,17 @@
                     <p>Enter Students Information needed.</p>
 
                     <form id="studentForm">
-                        <input type="text" id="StudentName" placeholder="Student Name">
-                        <input type="text" id="StudentNumber" placeholder="Student Number">
-                        <input type="email" id="StudentEmail" placeholder="Student Email">
-                        <select id="StudentSex" required>
-                            <option value="" disabled selected>Select Sex</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                        <button class="Add-Btn" onclick="submitStudentInformation()">Submit</button>
+                      <div class="form-grid">
+                          <input type="text" id="StudentName" placeholder="Student Name">
+                          <input type="text" id="StudentNumber" placeholder="Student Number">
+                          <input type="email" id="StudentEmail" placeholder="Student Email">
+                          <select id="StudentGender">
+                              <option value="" disabled selected>Select Sex</option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                          </select>
+                      </div>
+                        <button class="Add-Btn" type="submit">Submit</button>
                     </form>
                 </div>
             </div>
@@ -88,41 +84,19 @@
                     <table class="student-table">
                         <thead>
                         <tr>
+                            <th>ID</th>
+                            <th>Name</th>
                             <th>Student ID</th>
-                            <th>Day</th>
-                            <th>Time in</th>
-                            <th>Time out</th>
-                            <th>Duration</th>
-                            <th>Status</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Generate</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td class="student-cell">
-                                <div class="student-info">
-                                    <div class="avatar-placeholder"></div>
-                                    <span>Student Class</span>
-                                </div>
-                            </td>
-                            <td>Nov 11, 2026</td>
-                            <td>7:30 AM</td>
-                            <td>5:00 PM</td>
-                            <td>8 hours</td>
-                            <td>
-                                <span class="status-text absent">Absent</span>
-                                <span class="status-dot absent"></span>
-                            </td>
-                        </tr>
-                        </tbody>
+                        <tbody id="studentTable"></tbody>
                     </table>
                 </div>
 
-                <div class="pagination">
-                    <button class="page-btn active">Home</button>
-                    <button class="page-btn">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                </div>
+                <div class="pagination"></div>
             </section>
         </main>
     </div>

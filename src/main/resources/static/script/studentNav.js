@@ -1,5 +1,6 @@
 // GLOBAL VARIABLES PARA SA CARDS PAGINATION//
 let allCards = [];
+let filteredCards = [];
 let currentPage = 1;
 const cardsPerPage = 12;
 
@@ -10,23 +11,17 @@ searchInput.addEventListener("keyup", function () {
 
     const searchValue = searchInput.value.toLowerCase();
 
-    const cards = document.querySelectorAll(".card-box");
+    filteredCards = allCards.filter(card =>
+        card.name.toLowerCase().includes(searchValue) ||
+        card.subjectName.toLowerCase().includes(searchValue)
+    );
+    currentPage = 1;
 
-    cards.forEach(card => {
-
-        const text = card.textContent.toLowerCase();
-
-        if (text.includes(searchValue)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-
-    });
-
+    renderCards();
+    renderPagination();
 });
 
-function openAddStudentModal(){
+function openAddSectionModal(){
     document.getElementById("addSectionModal").style.display="block";
 }
 
@@ -40,6 +35,7 @@ document.getElementById("studentSectionForm").addEventListener("submit", functio
 });
 
 async function sectionForm(){
+    const form = document.getElementById("studentSectionForm");
     const sectionName = document.getElementById("SectionName").value;
     const subjectName = document.getElementById("SubjectName").value;
 
@@ -74,8 +70,17 @@ async function sectionForm(){
             }).then(() => {
                 document.getElementById("addSectionModal").style.display = "none";
             });
+            form.reset();
 
             loadCards();
+        } else {
+            const errorMessage = await response.text();
+
+            Swal.fire({
+                icon: "error",
+                title: "Login Failed",
+                text: errorMessage,
+            });
         }
 
     } catch (error){
@@ -95,6 +100,8 @@ async function loadCards(){
 
         allCards = await response.json();
 
+        filteredCards = [...allCards];
+
         renderCards();
         renderPagination();
 
@@ -111,7 +118,7 @@ function renderCards(){
     const start = (currentPage - 1) * cardsPerPage;
     const end = start + cardsPerPage;
 
-    const pageCards = allCards.slice(start,end);
+    const pageCards = filteredCards.slice(start,end);
 
     // must delete the console para lang toh sa see the logics //
     console.log("Current page:", currentPage);
@@ -146,8 +153,7 @@ function renderCards(){
 
         const cardBody = cardsElement.querySelector(".card-body");
         cardBody.addEventListener("click", (e) => {
-             window.location.href = `/../body/studentTable.html`;
-           // window.location.href = `/../body/studentTable.html/${card.id}`;//
+             window.location.href = `/../body/studentTable.html?id=${card.id}`;
         });
 
         cardsContainer.appendChild(cardsElement);
@@ -184,8 +190,6 @@ function renderPagination(){
         pagination.appendChild(btn);
 
     }
-
-
 }
 
 document.addEventListener("click", function(e){
@@ -295,8 +299,8 @@ function deleteCard(id){
             fetch(`/cards/delete/${id}`,{
                 method:"DELETE"
             })
-                .then(res=>{
-                    if(res.ok){
+                .then(response=>{
+                    if(response.ok){
 
                         Swal.fire({
                             icon: "success",

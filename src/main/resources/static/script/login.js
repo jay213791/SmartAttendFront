@@ -24,6 +24,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e){
 async function loginUser() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const form = document.getElementById("loginForm");
 
     if (!email || !password) {
         Swal.fire({
@@ -56,10 +57,12 @@ async function loginUser() {
                 icon: "success",
                 title: "Login Successful",
                 text: "Welcome to SmartAttend!",
+                allowOutsideClick: false,
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
                 window.location.href = "TeacherDashboard.html";
+                form.reset();
             });
         } else {
             const errorMessage = await response.text();
@@ -92,6 +95,7 @@ function closeForgotModal() {
 
 async function forgotPassword() {
     const email = document.getElementById("ForgotEmail").value
+    const form = document.getElementById("emailForm");
 
     if (!email) {
         Swal.fire({
@@ -140,6 +144,7 @@ async function forgotPassword() {
             resetEmail = email;
             document.getElementById("forgotModal").style.display = "none";
             document.getElementById("verifyForgotModal").style.display = "block";
+            form.reset();
         });
 
     } catch (error) {
@@ -161,6 +166,7 @@ function closeverifyForgotModal() {
 async function VerifyOtp() {
     const email = resetEmail;
     const otp = document.getElementById("otp").value;
+    const form = document.getElementById("OtpForm");
 
     if (!otp) {
         Swal.fire({
@@ -198,6 +204,7 @@ async function VerifyOtp() {
         }).then(() => {
             document.getElementById("verifyForgotModal").style.display = "none";
             document.getElementById("changePasswordModal").style.display = "block";
+            form.reset();
         });
     } catch (error) {
         console.error("VerifyOtp", error);
@@ -217,6 +224,7 @@ async function submitNewPassword(){
     const email = resetEmail;
     const password = document.getElementById("newPassword").value;
     const confirmPassword = document.getElementById("confirmNewPassword").value;
+    const form = document.getElementById("newPasswordForm");
 
     if (!newPassword) {
         Swal.fire({
@@ -262,6 +270,7 @@ async function submitNewPassword(){
             showConfirmButton: false
         }).then(() => {
             document.getElementById("changePasswordModal").style.display = "none";
+            form.reset();
         });
     } catch (error) {
         console.error("Login Failed", error);

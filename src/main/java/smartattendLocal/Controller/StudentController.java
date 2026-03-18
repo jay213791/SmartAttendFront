@@ -1,19 +1,26 @@
 package smartattendLocal.Controller;
 
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import smartattendLocal.Entity.Card;
 import smartattendLocal.QRCodeGenerator;
+import org.springframework.core.io.ByteArrayResource;
 import smartattendLocal.Entity.Student;
 import smartattendLocal.Entity.Teacher;
+import smartattendLocal.Repository.CardsRepository;
 import smartattendLocal.Repository.StudentRepository;
 import smartattendLocal.Repository.TeacherRepository;
 
@@ -30,40 +37,143 @@ public class StudentController {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    // ADD NG STUDENTS API
-    @PostMapping("/add")
-    public ResponseEntity<?> addStudent(@RequestBody Student student, Authentication authentication) {
+    @Autowired
+    private CardsRepository cardsRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
+    
+    @PostMapping("/{cardId}/add")
+    public ResponseEntity<?> addStudent(@PathVariable int cardId, @RequestBody Student student, Authentication authentication) {
+        
         Teacher teacher = teacherRepository.findByEmail(authentication.getName());
         student.setTeacher(teacher);
 
-        if (studentRepository.existsByEmail(student.getEmail())) {
+        Card card = cardsRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Card not found"));
+        student.setCard(card);
+
+
+        if (studentRepository.existsByEmailAndCardId(student.getEmail(), cardId)) {
             return ResponseEntity
                     .badRequest()
                     .body("Email Already Exists");
         }
 
-        if (student.getQrCode() == null  || student.getQrCode().isEmpty()) {
-            // use the student number
-            if (student.getStudentNumber() != 0) {
-                student.setQrCode("QR" + student.getStudentNumber());
-            } else {
-                // or generate random uuid (only if no student number provided)
-                student.setQrCode(UUID.randomUUID().toString().substring(0, 8));
+        if (studentRepository.existsByStudentNumber(student.getStudentNumber())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Student Number Already Exists");
+        }
+
+        Student savedStudent = studentRepository.save(student);
+
+        return ResponseEntity.ok(savedStudent);
+    }
+
+    @PostMapping("/{id}/send-qr")
+    public ResponseEntity<?> sendQRCode(@PathVariable int id) {
+
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) {
+            return ResponseEntity.badRequest().body("Student not found");
+        }
+
+        String qrCode = "CID:" + student.getCard().getName() + "|SID:" + student.getId() + "|R:" + UUID.randomUUID().toString().substring(0,5);
+        student.setQrCode(qrCode);
+        student.setQrExpiry(LocalDateTime.now().plusMinutes(10));
+        studentRepository.save(student);
+
+
+        try {
+
+            byte[] qrImage = QRCodeGenerator.generateQRCodeImage(
+                    student.getQrCode(),
+                    200,
+                    200
+            );
+            sendEmail(student.getEmail(), qrImage);
+        } catch (Exception e) {
+           logger.error("failed to send QR code", e);
+           return ResponseEntity.badRequest().body("Failed to send QR code: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok("QR sent successfully");
+
+    }
+
+    @PostMapping("/{cardId}/send-qrForAll")
+    public ResponseEntity<?> sendQRCodeByWhole(@PathVariable int cardId) {
+        List<Student> students = studentRepository.findByCardId(cardId);
+
+        if (students.isEmpty()) {
+            return ResponseEntity.badRequest().body("No students found for this card");
+        }
+
+        for (Student student : students) {
+                String qrCode = "CID:" + student.getCard().getName() + "|SID:" + student.getId() + "|R:" + UUID.randomUUID().toString().substring(0,5);
+                student.setQrCode(qrCode);
+                student.setQrExpiry(LocalDateTime.now().plusMinutes(10));
+                studentRepository.save(student);
+
+            try {
+
+                byte[] qrImage = QRCodeGenerator.generateQRCodeImage(
+                        student.getQrCode(),
+                        200,
+                        200
+                );
+                if (student.getEmail() != null) {
+                    sendEmail(student.getEmail(), qrImage);
+                    Thread.sleep(200);
+                }
+            } catch (Exception e) {
+                logger.error("failed to send QR code" + student.getEmail(), e);
             }
         }
 
-        // save ng student sa database
-        Student savedStudent = studentRepository.save(student);
+        return ResponseEntity.ok("QR sent successfully");
 
-        // Generate QR code image tapos i save sa file
-        String qrFilePath = "C:" + File.separator + "Users" + File.separator + "Christian Jay" + File.separator + "Downloads" + File.separator + savedStudent.getStudentNumber() + ".png";
+    }
+
+    private void sendEmail(String studentEmail,byte[] qrImage) {
 
         try {
-            QRCodeGenerator.generateQRCodeImage(savedStudent.getQrCode(), 200, 200, qrFilePath);
+
+            MimeMessage message = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(studentEmail);
+            helper.setSubject("Your SmartAttend QR Code");
+
+            String htmlContent = """
+            <h2>SmartAttend QR Code</h2>
+            <p>Hello,</p>
+            <p>Please use this QR code for your attendance.</p>
+            <br>
+            <img src='cid:qrcode'>
+            <br><br>
+            <p>Keep this QR safe.</p>
+            <br>
+            <p>It will expire in 10 minutes.</p>
+        """;
+
+            helper.setText(htmlContent, true);
+
+            ByteArrayResource qrResource = new ByteArrayResource(qrImage);
+
+            helper.addInline("qrcode", qrResource,"image/png");
+
+            helper.setFrom("smart.attend22526@gmail.com");
+
+            mailSender.send(message);
+
+            System.out.println("Email sent successfully to " + studentEmail);
+
         } catch (Exception e) {
-            logger.error("Failed to generate QR code for student: {}", savedStudent.getStudentNumber(), e);
+            logger.error("failed to send QR code", e);
         }
-        return ResponseEntity.ok(savedStudent);
     }
 
     // VIEW NG ALL STUDENTS
@@ -82,10 +192,68 @@ public class StudentController {
 
         return studentRepository.countByTeacherEmail(teacherEmail);
     }
+
+    @GetMapping("/{cardId}/students")
+    public  ResponseEntity<?> getStudentsByCard(@PathVariable int cardId, Authentication authentication){
+        List<Student> students = studentRepository.findByCardId(cardId);
+        String teacherEmail = authentication.getName();
+
+        if (teacherEmail == null || teacherEmail.isEmpty()) {
+            throw new RuntimeException("Teacher not found");
+        }
+
+        return ResponseEntity.ok(students);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateStudent(@PathVariable int id, @RequestBody Student student, Authentication authentication) {
+        String teacherEmail = authentication.getName();
+        Teacher teacher = teacherRepository.findByEmail(teacherEmail);
+        if (teacher == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Teacher not found");
+        }
+
+        Student existing = studentRepository.findById(id).orElse(null);
+
+        if (existing == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Student not found");
+        }
+
+        if (student.getName() != null) {
+            existing.setName(student.getName());
+        }
+
+        if (student.getStudentNumber() != null) {
+            existing.setStudentNumber(student.getStudentNumber());
+        }
+
+        if (student.getEmail() != null) {
+            existing.setEmail(student.getEmail());
+        }
+
+        if (student.getSex() != null) {
+            existing.setSex(student.getSex());
+        }
+
+        studentRepository.save(existing);
+        return ResponseEntity.ok(student);
+    }
+
     // DELETE NG STUDENT
     @DeleteMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable int id) {
+    public ResponseEntity<?> deleteStudent(@PathVariable int id, Authentication authentication) {
+        String teacherEmail = authentication.getName();
+        Teacher teacher = teacherRepository.findByEmail(teacherEmail);
+        if (teacher == null) {
+            return  ResponseEntity
+                    .badRequest()
+                    .body("Teacher not found");
+        }
         studentRepository.deleteById(id);
-        return "Student with ID " + id + " deleted successfully.";
+        return ResponseEntity.ok("Student with id " + id + " has been deleted");
     }
 }

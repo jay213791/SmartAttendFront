@@ -36,7 +36,6 @@ document.getElementById("registerForm").addEventListener("submit", function (e){
     validateRegister();
 });
 
-
 // this function check kung yung email exists sa database
 async function checkEmailExists(email) {
     try {
