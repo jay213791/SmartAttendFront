@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import smartattendLocal.*;
 import smartattendLocal.Entity.Attendance;
 import smartattendLocal.Entity.Card;
 import smartattendLocal.Entity.Student;
@@ -185,21 +184,25 @@ public class AttendanceController {
             LocalDate day = today.minusDays(i);
             String dayAbbr = day.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
 
-            // only count cards that have class scheduled on this specific day
-            // for today: only count absent after class has ended
-            boolean isToday = day.equals(today);
+            // only count cards scheduled on this specific day — no end-time gate
             Set<Integer> scheduledCardIds = new HashSet<>();
+            Set<Integer> endedCardIds = new HashSet<>();
             long scheduledStudents = 0;
+            LocalTime nowTime = LocalTime.now();
+            boolean isToday = day.equals(today);
             for (Card c : cards) {
                 if (c.getClassDays() == null || c.getClassDays().isEmpty()) continue;
                 List<String> days = Arrays.asList(c.getClassDays().split(","));
                 if (!days.contains(dayAbbr)) continue;
-                if (isToday && (c.getEndTime() == null || LocalTime.now().isBefore(c.getEndTime()))) continue;
                 scheduledCardIds.add(c.getId());
                 scheduledStudents += studentRepository.findByCardId(c.getId()).size();
+                // for today: only count absent after class ends
+                if (!isToday || c.getEndTime() == null || nowTime.isAfter(c.getEndTime())) {
+                    endedCardIds.add(c.getId());
+                }
             }
 
-            long present = 0, late = 0;
+            long present = 0, late = 0, endedScheduledStudents = 0;
             if (!scheduledCardIds.isEmpty()) {
                 List<Attendance> records = attendanceRepository.findByScanTimeBetween(
                         day.atStartOfDay(), day.atTime(23, 59, 59));
@@ -209,7 +212,13 @@ public class AttendanceController {
                     else if ("Late".equals(a.getStatus())) late++;
                 }
             }
-            long absent = Math.max(scheduledStudents - present - late, 0);
+            // absent only for cards whose class has ended
+            for (Card c : cards) {
+                if (endedCardIds.contains(c.getId())) {
+                    endedScheduledStudents += studentRepository.findByCardId(c.getId()).size();
+                }
+            }
+            long absent = Math.max(endedScheduledStudents - present - late, 0);
 
             Map<String, Object> entry = new LinkedHashMap<>();
             entry.put("date", dayAbbr + " " + day.getMonthValue() + "/" + day.getDayOfMonth());
@@ -226,19 +235,15 @@ public class AttendanceController {
         String teacherEmail = authentication.getName();
         List<Card> cards = cardsRepository.findByTeacher_Email(teacherEmail);
 
-        String todayAbbr = LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
-
-        // only count cards scheduled today
-        Set<Integer> scheduledCardIds = new HashSet<>();
+        // totalStudents = ALL enrolled students across ALL teacher's cards, regardless of schedule
         long totalStudents = 0;
+        Set<Integer> allCardIds = new HashSet<>();
         for (Card c : cards) {
-            if (c.getClassDays() == null || c.getClassDays().isEmpty()) continue;
-            List<String> days = Arrays.asList(c.getClassDays().split(","));
-            if (!days.contains(todayAbbr)) continue;
-            scheduledCardIds.add(c.getId());
+            allCardIds.add(c.getId());
             totalStudents += studentRepository.findByCardId(c.getId()).size();
         }
 
+        // present/late/absent only from today's scans across all teacher's cards
         LocalDate today = LocalDate.now();
         List<Attendance> records = attendanceRepository.findByScanTimeBetween(
                 today.atStartOfDay(), today.atTime(23, 59, 59));
@@ -247,7 +252,7 @@ public class AttendanceController {
         List<Map<String, Object>> recentList = new ArrayList<>();
 
         for (Attendance a : records) {
-            if (!scheduledCardIds.contains(a.getCard().getId())) continue;
+            if (!allCardIds.contains(a.getCard().getId())) continue;
             if ("Present".equals(a.getStatus())) present++;
             else if ("Late".equals(a.getStatus())) late++;
 

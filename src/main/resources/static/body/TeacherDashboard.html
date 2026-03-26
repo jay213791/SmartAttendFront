@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Report</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="../style/teacherDashboard.css">
-    <link rel="stylesheet" href="../style/report.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" type="image/png" sizes="50x50" href="../assets/SmartAttend-LOGO.jpg">
 </head>
 <body>
+
 <div class="MainContainer">
 
     <header class="header">
@@ -30,8 +30,8 @@
     <div class="dashboardBody">
         <aside class="sidebar">
             <ul>
-                <li class="nav-item">
-                    <a href="index.html">
+                <li class="nav-item active">
+                    <a href="TeacherDashboard.html">
                         <svg width="40" height="34" viewBox="0 0 56 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M53.2583 2.4143V31.5857H2.74156V2.4143H53.2583ZM54.0167 0H1.98327C0.874727 0 0 0.754578 0 1.70999V32.29C0 33.2458 0.875167 34 1.98327 34H54.0167C55.1253 34 56 33.2454 56 32.29V1.70999C56 0.754588 55.1248 0 54.0167 0Z" fill="currentColor"/>
                             <path d="M17.2076 9.75781C21.8743 9.75781 25.6074 13.0269 25.6074 17.0002C25.6074 21.0239 21.816 24.2426 17.2076 24.2426C12.5409 24.243 8.74947 21.0243 8.74947 17.0006C8.74947 12.9769 12.5409 9.75781 17.2076 9.75781ZM17.2076 7.34352C11.0245 7.34352 6.00781 11.669 6.00781 17.0001C6.00781 22.3312 11.0245 26.6567 17.2076 26.6567C23.3912 26.6571 28.3492 22.3316 28.3492 17.0004C28.3492 11.6689 23.3913 7.34352 17.2076 7.34352Z" fill="currentColor"/>
@@ -54,7 +54,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="report.html">
                         <svg width="40" height="48" viewBox="0 0 56 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M54.7259 27.0211H41.1524V3.51644C41.1511 2.5841 40.7476 1.69068 40.031 1.03122C39.3138 0.372238 38.3423 0.00116139 37.3285 0H3.82386C2.81001 0.00116317 1.83784 0.372238 1.12138 1.03122C0.404782 1.69078 0.00126292 2.5842 0 3.51644V44.4836C0.00126503 45.4159 0.404782 46.3099 1.12138 46.9688C1.83797 47.6283 2.81013 47.9988 3.82386 48H39.877C44.1519 47.9953 48.2497 46.4326 51.2723 43.653C54.2949 40.8734 55.995 37.105 56 33.1745V28.1929C56 27.8823 55.8659 27.5839 55.6268 27.3641C55.3878 27.1442 55.0633 27.0209 54.7256 27.0209L54.7259 27.0211ZM2.54942 44.4836V3.51644C2.55005 2.86908 3.1199 2.34505 3.82385 2.34446H37.3285C38.0325 2.34505 38.6023 2.86908 38.6029 3.51644C38.5751 13.7396 38.6232 35.5826 38.6029 45.6554H3.82403C3.12008 45.6554 2.55022 45.1308 2.54959 44.4834L2.54942 44.4836ZM53.4516 33.1745H53.451C53.4472 36.2809 52.1848 39.2746 49.9111 41.5719C47.6373 43.8688 44.5148 45.3053 41.1526 45.6009V29.3653H53.4516L53.4516 33.1745ZM18.6598 35.0357C21.3346 35.0345 23.8991 34.0574 25.7915 32.3195C27.684 30.581 28.7497 28.2237 28.7541 25.7641C28.7547 25.4535 28.62 25.1552 28.3809 24.9353C28.1418 24.7154 27.818 24.5921 27.4796 24.5921H19.9342V17.6533C19.9342 17.3427 19.8001 17.0444 19.561 16.8245C19.3219 16.6046 18.9975 16.4813 18.6597 16.4813C5.30822 16.9478 5.30061 34.5722 18.6597 35.0352L18.6598 35.0357ZM17.3853 18.9252V25.7646H17.3847C17.3847 26.0757 17.5188 26.3741 17.7579 26.594C17.9969 26.8138 18.3214 26.9371 18.6598 26.9371H26.0971C24.373 35.1752 11.3384 34.2324 11.1271 25.7651L11.1264 25.7646C11.1277 24.1297 11.7558 22.5477 12.9005 21.2965C14.0453 20.0454 15.6335 19.2056 17.3847 18.9252H17.3853ZM21.2092 14.1373V22.2481H21.2086C21.2086 22.5593 21.3427 22.8576 21.5818 23.0775C21.8208 23.2973 22.1453 23.4206 22.483 23.4206H31.3036C31.6413 23.4206 31.9657 23.2973 32.2048 23.0775C32.4439 22.8576 32.578 22.5593 32.578 22.2481C32.5748 19.7873 31.5104 17.4276 29.6181 15.6875C27.7258 13.9473 25.1598 12.9683 22.4832 12.9655C22.1455 12.9655 21.821 13.0888 21.5819 13.3087C21.3428 13.5285 21.2088 13.8269 21.2088 14.1375L21.2092 14.1373ZM23.7581 15.4093C25.2956 15.6536 26.713 16.3294 27.8159 17.3444C28.9196 18.3587 29.6544 19.6627 29.9201 21.076H23.7574L23.7581 15.4093ZM14.1142 7.14041H26.8598C27.5543 7.15262 28.1096 7.67375 28.1096 8.31238C28.1096 8.95101 27.5543 9.47214 26.8598 9.48435H14.1142C13.4204 9.47155 12.8651 8.95043 12.8651 8.31238C12.8651 7.67433 13.4204 7.1532 14.1142 7.14041ZM33.1924 42.3036H7.66034C6.96588 42.2908 6.41057 41.7697 6.41057 41.1316C6.41057 40.493 6.96588 39.9718 7.6597 39.9591H33.1918C33.8862 39.9713 34.4428 40.4924 34.4428 41.1316C34.4428 41.7702 33.8862 42.2914 33.1918 42.3036H33.1924Z" fill="currentColor"/>
@@ -74,79 +74,133 @@
                     </a>
                 </li>
             </ul>
+            <div class="log-outBtn">
+                <div class="log-outBtn">
+                    <i class="fa-solid fa-right-from-bracket fa-lg" style="color:white"></i>
+                    <p onclick="logoutFunction()">Logout</p>
+                </div>
+            </div>
         </aside>
 
         <main class="dashboard-main">
 
-            <div class="report-header">
-                <h1>Attendance Report</h1>
+            <div class="modal" id="LogoutModal">
+                <div class="modal-content">
+                    <h2>Confirm Logout?</h2>
+                    <p>Are you sure you want to log out?</p>
+                    <div class="logout-btn-container">
+                        <button class="LogoutBtn" onclick="LogoutBtn()">Yes</button>
+                        <button class="LogoutBtn" onclick="closeLogoutModal()">No</button>
+                    </div>
+                </div>
             </div>
 
-            <section class="report-filters card">
-                <div class="filter-group">
-                    <label for="classFilter">Class</label>
-                    <select id="classFilter">
-                        <option value="">All Classes</option>
-                    </select>
+            <div>
+                <h1>Dashboard</h1>
+            </div>
+
+            <section class="stats-row">
+                <div class="stats-card">
+                    <span class="label">Total Students</span>
+                    <span class="value" id="studentCount">0</span>
+                    <span class="sub">All enrolled students</span>
+                    <svg width="42" height="33" viewBox="0 0 42 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.0628064 33H3.05429V22.1613C-0.69504 25.0181 0.0628064 27.9753 0.0628064 33Z" fill="white"/>
+                        <path d="M5.04858 20.9625V33H11.0316V19.075C6.79361 20.2881 6.16526 20.4171 5.04858 20.9629V20.9625Z" fill="white"/>
+                        <path d="M13.1658 27.0709C12.9264 26.6472 13.0263 25.8936 13.0263 32.9997H14.871L16.8654 29.3677L16.1076 27.7312C15.6084 27.9665 14.9894 28.0291 14.4197 27.9011C13.8504 27.7734 13.3903 27.4687 13.1658 27.0709Z" fill="white"/>
+                        <path d="M24.2944 26.6257L21.0038 24.2569L17.7228 26.6257L19.0095 29.4106L17.0151 32.9995H24.9925L22.9982 29.4106L24.2944 26.6257Z" fill="white"/>
+                        <path d="M25.8794 27.7315L25.1216 29.368L27.1159 32.9999H28.9803C28.9803 25.822 29.0501 26.6977 28.8408 27.0711C28.6178 27.4734 28.1539 27.7817 27.5791 27.91C27.0042 28.0382 26.3797 27.9724 25.8794 27.7315Z" fill="white"/>
+                        <path d="M30.9751 19.075V33H36.9582V20.9625C35.8014 20.3954 35.024 20.2375 30.9751 19.0747V19.075Z" fill="white"/>
+                        <path d="M38.9524 22.1613V33H41.9439C41.9439 27.918 42.662 24.9898 38.9524 22.1613Z" fill="white"/>
+                        <path d="M26.9868 15.2632C29.4995 13.4544 28.9811 10.6479 28.9811 7.87737H22.998L21.0037 5.724L19.0094 7.87737H13.0263C13.0263 10.6409 12.5179 13.4618 15.0206 15.2632C16.5348 16.4992 18.7139 17.2074 21.0037 17.2074C23.2931 17.2074 25.4722 16.4993 26.9868 15.2632Z" fill="white"/>
+                        <path d="M30.9751 10.7483C31.6876 10.7483 32.346 10.4744 32.7023 10.0305C33.0585 9.58623 33.0585 9.03914 32.7023 8.5949C32.346 8.15065 31.6876 7.87711 30.9751 7.87711V10.7483Z" fill="white"/>
+                        <path d="M11.0317 10.7483V7.87711C10.3192 7.87711 9.66082 8.15065 9.30455 8.5949C8.94829 9.03914 8.94829 9.58623 9.30455 10.0305C9.66082 10.4745 10.3192 10.7483 11.0317 10.7483Z" fill="white"/>
+                        <path d="M17.9427 6.44124L21.0041 3.1322L24.0654 6.44124C31.5043 6.44124 31.2648 6.44124 31.8033 6.5131C31.1969 4.05918 29.0167 1.95546 25.9216 0.838082C22.827 -0.279361 19.1808 -0.279361 16.0859 0.838082C12.9909 1.95553 10.8106 4.05924 10.2046 6.5131C10.7527 6.44124 10.5835 6.44124 17.9426 6.44124H17.9427Z" fill="white"/>
+                        <path d="M13.0261 18.6442V22.9507L15.0204 26.5397L21.0035 22.2329L15.0204 17.9264L13.0261 18.6442Z" fill="white"/>
+                        <path d="M21.0037 22.2325L26.9867 26.5393L28.9807 22.9503V18.6438L26.9867 17.926L21.0037 22.2325Z" fill="white"/>
+                        <path d="M38.9525 19.3616C38.9525 18.2193 38.3224 17.1238 37.2002 16.3163C36.0783 15.5085 34.5564 15.0549 32.9696 15.0549H29.6292C29.1694 15.6476 28.5838 16.1851 27.8943 16.6483L28.9812 17.0432C28.9812 16.9211 28.2234 16.7416 35.7919 18.9094C39.4314 19.9502 38.9526 20.9479 38.9526 19.3616L38.9525 19.3616Z" fill="white"/>
+                        <path d="M18.5105 18.4144L21.0032 20.2088L23.4959 18.4144H23.4963C21.8612 18.7182 20.1455 18.7182 18.5105 18.4144Z" fill="white"/>
+                        <path d="M13.0263 16.9571C13.0263 17.0648 12.8667 17.0936 14.1032 16.6486C13.4208 16.1824 12.8392 15.6452 12.378 15.0551H9.03764C7.4508 15.0551 5.92884 15.5087 4.80703 16.3165C3.68485 17.1241 3.05469 18.2196 3.05469 19.3618V20.2017C5.56744 18.9884 4.59033 19.3619 13.0263 16.9571Z" fill="white"/>
+                    </svg>
                 </div>
-                <div class="filter-group">
-                    <label for="dateFilter">Date</label>
-                    <input type="date" id="dateFilter">
+                <div class="stats-card">
+                    <span class="label">Present Today</span>
+                    <span class="value" id="presentCount">0</span>
+                    <span class="sub">Checked in so far</span>
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18 36C20.3638 36 22.7044 35.5344 24.8883 34.6298C27.0722 33.7253 29.0565 32.3994 30.7279 30.7279C32.3994 29.0565 33.7253 27.0722 34.6298 24.8883C35.5344 22.7044 36 20.3638 36 18C36 15.6362 35.5344 13.2956 34.6298 11.1117C33.7253 8.92784 32.3994 6.94353 30.7279 5.27208C29.0565 3.60062 27.0722 2.27475 24.8883 1.37017C22.7044 0.465584 20.3638 -3.52233e-08 18 0C13.2261 7.11366e-08 8.64773 1.89642 5.27208 5.27208C1.89642 8.64773 0 13.2261 0 18C0 22.7739 1.89642 27.3523 5.27208 30.7279C8.64773 34.1036 13.2261 36 18 36ZM17.536 25.28L27.536 13.28L24.464 10.72L15.864 21.038L11.414 16.586L8.586 19.414L14.586 25.414L16.134 26.962L17.536 25.28Z" fill="white"/>
+                    </svg>
+
                 </div>
-                <button class="filter-btn" onclick="loadReport()">
-                    <i class="fa-solid fa-magnifying-glass"></i> View
-                </button>
-                <button class="download-btn" onclick="downloadCSV()">
-                    <i class="fa-solid fa-download"></i> Download CSV
-                </button>
+                <div class="stats-card">
+                    <span class="label">Absent</span>
+                    <span class="value" id="absentCount">0</span>
+                    <span class="sub">No attendance recorded</span>
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="18" r="18" fill="white"/>
+                        <path d="M26.6357 11.9928C27.7611 10.9299 26.0151 9.2799 24.8893 10.3433C22.5927 12.5124 20.2961 14.6814 17.9996 16.8503L11.11 10.3433C9.98464 9.28051 8.23755 10.9295 9.36353 11.9928C11.6599 14.1618 13.9565 16.3309 16.2532 18.5003L9.36353 25.0072C8.23819 26.0701 9.98417 27.7201 11.11 26.6567C13.4066 24.4876 15.7032 22.3186 18.0002 20.1497C19.6528 21.7105 21.3055 23.2714 22.9581 24.8322C23.6021 25.4405 24.246 26.0486 24.89 26.6568C26.0154 27.7197 27.7624 26.0707 26.6365 25.0074C24.3399 22.8383 22.0433 20.6693 19.7468 18.5004C21.3994 16.9397 23.0521 15.3787 24.7047 13.8179C25.3487 13.2097 25.9928 12.6014 26.6366 11.9931L26.6357 11.9928Z" fill="#6BA4B1"/>
+                    </svg>
+
+                </div>
+                <div class="stats-card">
+                    <span class="label">Late Students</span>
+                    <span class="value" id="lateCount">0</span>
+                    <span class="sub">Arrived after call time</span>
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M36 18.0004C36 27.925 27.9257 36 18.0004 36C8.07505 36 0 27.925 0 18.0004C0 8.07505 8.07434 0 18.0004 0C21.2801 0 24.4921 0.892458 27.2891 2.58134C27.9435 2.97743 28.1538 3.82804 27.7584 4.48243C27.363 5.13686 26.5131 5.34779 25.8573 4.95307C23.4924 3.52398 20.7751 2.76924 18 2.76924C9.60166 2.76924 2.76892 9.60172 2.76892 18.0003C2.76892 26.3989 9.6014 33.2305 17.9991 33.2305C26.3974 33.2305 33.2293 26.398 33.2293 18.0003C33.2293 14.0535 31.7229 10.3093 28.9884 7.46019C28.459 6.90848 28.4772 6.0325 29.0289 5.50238C29.5799 4.97368 30.456 4.98983 30.9867 5.54291C34.2187 8.91092 35.9988 13.335 35.9988 18.0002L36 18.0004Z" fill="white"/>
+                        <path d="M17.997 5.53609C18.7617 5.53609 19.3814 6.15549 19.3814 6.92051V17.9971C19.3814 18.7625 18.7613 19.3815 17.997 19.3815H11.0741C10.3094 19.3815 9.6897 18.7621 9.6897 17.9971C9.6897 17.2317 10.3098 16.6127 11.0741 16.6127H16.6126V6.92034C16.6122 6.15495 17.2323 5.53557 17.997 5.53557V5.53609Z" fill="white"/>
+                    </svg>
+
+                </div>
             </section>
 
-            <section class="report-summary card" id="summarySection" style="display:none">
-                <div class="summary-item present">
-                    <span class="summary-count" id="sumPresent">0</span>
-                    <span class="summary-label">Present</span>
-                </div>
-                <div class="summary-item late">
-                    <span class="summary-count" id="sumLate">0</span>
-                    <span class="summary-label">Late</span>
-                </div>
-                <div class="summary-item absent">
-                    <span class="summary-count" id="sumAbsent">0</span>
-                    <span class="summary-label">Absent</span>
-                </div>
-                <div class="summary-item total">
-                    <span class="summary-count" id="sumTotal">0</span>
-                    <span class="summary-label">Total</span>
-                </div>
-            </section>
+            <section class="main-grid">
+                <article class="card">
+                    <div class="card-header">
+                        <h2>Attendance Overview</h2>
+                        <span>Weekly trend</span>
+                    </div>
+                    <canvas id="attendanceChart" height="120"></canvas>
+                    <div class="chart-legend">
+                        <span class="present">Present</span>
+                        <span class="absent">Absent</span>
+                        <span class="late">Late</span>
+                    </div>
+                </article>
 
-            <section class="card report-table-card">
-                <div class="card-header">
-                    <h2 id="reportTitle">Select a date and class to view report</h2>
-                    <span id="reportSubtitle"></span>
-                </div>
-                <div class="table-scroll">
-                    <table class="report-table">
+                <article class="card">
+                    <div class="card-header">
+                        <h2>Recent Attendance Table</h2>
+                        <span>Today</span>
+                    </div>
+                    <table class="recent-table">
                         <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Student Name</th>
-                                <th>Student No.</th>
-                                <th>Email</th>
-                                <th>Time In</th>
-                                <th>Status</th>
-                            </tr>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>ID</th>
+                            <th>Time In</th>
+                            <th>Status</th>
+                        </tr>
                         </thead>
-                        <tbody id="reportTableBody">
-                            <tr><td colspan="6" class="empty-msg">Use the filters above to load a report.</td></tr>
+                        <tbody id="recentTableBody">
                         </tbody>
                     </table>
-                </div>
+                </article>
             </section>
 
+            <article class="card schedule-card">
+                <div class="card-header">
+                    <h2>Today's Schedule</h2>
+                    <span id="scheduleDay"></span>
+                </div>
+                <ul class="schedule-list" id="scheduleList">
+                    <li class="schedule-empty">Loading...</li>
+                </ul>
+            </article>
         </main>
     </div>
 </div>
-<script src="../script/report.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../script/teacherDashboard.js"></script>
 </body>
 </html>

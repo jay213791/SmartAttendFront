@@ -65,6 +65,8 @@ function openCamera() {
                     icon: "success",
                     title: "Scanned",
                     text: result,
+                    timer: 1500,
+                    showConfirmButton: false,
                 }).then(() => {
                     loadStudent();
                 });
@@ -74,6 +76,8 @@ function openCamera() {
                     icon: "error",
                     title: "Error",
                     text: result,
+                    timer: 1500,
+                    showConfirmButton: false
                 });
             }
         } catch (err) {
@@ -95,7 +99,7 @@ function openCamera() {
 
         setTimeout(() => {
             isProcessing = false;
-        }, 3000); // 2 seconds delay
+        }, 3000);
     }
 
     function onScanFailure(error) {
